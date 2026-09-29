@@ -13,89 +13,89 @@
 
 <br />
 
-## 📖 Hakkında (About)
+## 📖 About
 
-**Market Management System**, çoklu şube (multi-tenant) yapısına sahip işletmeler için geliştirilmiş, B2B/SaaS mimarisine uygun modern bir stok ve mağaza yönetim sistemidir. 
+**Market Management System** is a modern B2B/SaaS inventory and store management system built with a multi-tenant architecture. 
 
-Farklı mağazaların (şubelerin) tek bir sistem üzerinden tamamen izole bir şekilde yönetilmesine olanak tanır. Kullanıcı yetkilendirmesi, stok giriş/çıkış operasyonları, dinamik sepet yönetimi ve PDF tabanlı faturalandırma gibi süreçleri uçtan uca dijitalleştirir.
+It allows businesses with multiple branches (e.g., Central Branch, Kadıköy Branch) to manage their operations in complete isolation from a single centralized system. It digitizes end-to-end processes including role-based authorization, inventory tracking, dynamic cart/POS management, and automated PDF invoicing.
 
-## ✨ Temel Özellikler (Key Features)
+## ✨ Key Features
 
-- **🏢 Çoklu Şube (Multi-tenant) Mimarisi:** Merkez ve şubelerin (Örn: Beşiktaş Şube, Kadıköy Şube) verileri birbirinden tamamen izole edilir. Yöneticiler sadece kendi şubelerini yönetir; Süper Admin tüm sisteme hakimdir.
-- **🔐 Güvenlik & Yetkilendirme:** JWT (JSON Web Token) tabanlı Role-Based Access Control (RBAC). BCrypt ile şifreleme.
-- **📦 Gelişmiş Stok Yönetimi:** Ürün giriş ve çıkış logları, kritik stok seviyesi takibi.
-- **🛒 Sepet ve Sipariş Modülü:** Hızlı satış ekranı (POS mantığı), anlık toplam hesaplama.
-- **📄 Dinamik PDF Fatura:** Satış tamamlandığında `QuestPDF` altyapısı ile milisaniyeler içinde siparişe özel PDF fatura oluşturma.
-- **🎨 Modern Arayüz (UI/UX):** React ve Vite ile geliştirilmiş; sade, açık renkli (clean flat/neumorphic) ve kullanıcı dostu arayüz.
+- **🏢 Multi-Tenant Architecture:** Data between branches is completely isolated. Branch admins can only manage their respective stores, while Super Admins have a global view of the entire system.
+- **🔐 Security & Authorization:** Role-Based Access Control (RBAC) via JWT (JSON Web Tokens) with BCrypt password hashing.
+- **📦 Advanced Inventory Management:** Track stock movements (in/out) and receive low-stock alerts.
+- **🛒 POS & Order Module:** Fast checkout interface with real-time total calculations.
+- **📄 Dynamic PDF Invoicing:** Automatically generates fully branded, real-time PDF invoices upon checkout using the `QuestPDF` engine.
+- **🎨 Modern UI/UX:** Built with React and Vite featuring a clean, flat, neumorphic-inspired light theme for maximum usability.
 
-## 🛠️ Teknoloji Yığını (Tech Stack)
+## 🛠️ Tech Stack
 
 ### Backend
 - **Framework:** .NET 9.0 (ASP.NET Core Web API)
 - **ORM:** Entity Framework Core 9 (Code-First)
-- **Veritabanı:** Microsoft SQL Server 2022
-- **Araçlar:** QuestPDF (Fatura), BCrypt.Net (Kriptografi), JWT Bearer
+- **Database:** Microsoft SQL Server 2022
+- **Tools:** QuestPDF (Invoicing), BCrypt.Net (Cryptography), JWT Bearer
 
 ### Frontend
 - **Framework:** React 18 (Vite.js)
-- **Yönlendirme:** React Router DOM v7
-- **HTTP İstemcisi:** Axios
-- **Durum Yönetimi:** Context API
+- **Routing:** React Router DOM v7
+- **HTTP Client:** Axios
+- **State Management:** Context API
 
 ### DevOps
-- **Konteynerizasyon:** Docker & Docker Compose
-- **Web Sunucu:** NGINX (Frontend için)
+- **Containerization:** Docker & Docker Compose
+- **Web Server:** NGINX (Frontend)
 
 ---
 
-## 🚀 Kurulum ve Çalıştırma (Getting Started)
+## 🚀 Getting Started
 
-Projeyi yerel ortamınızda çalıştırmanın en kolay yolu **Docker** kullanmaktır.
+The easiest way to run the project locally is via **Docker**.
 
-### Ön Koşullar
+### Prerequisites
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Node.js 18+ (Sadece lokal geliştirme için)
-- .NET 9 SDK (Sadece lokal geliştirme için)
+- Node.js 18+ (For local frontend development)
+- .NET 9 SDK (For local backend development)
 
-### Docker ile Tek Tıkla Kurulum
-Veritabanı, Backend ve Frontend'i aynı anda ayağa kaldırmak için ana dizinde şu komutu çalıştırın:
+### One-Click Setup (Docker)
+To spin up the Database, Backend, and Frontend simultaneously, run the following command in the root directory:
 
 ```bash
 docker-compose up -d --build
 ```
-* **Frontend (Arayüz):** `http://localhost:3000`
-* **Backend (API):** `http://localhost:5228/swagger`
+* **Frontend (UI):** `http://localhost:3000`
+* **Backend (API / Swagger):** `http://localhost:5228/swagger`
 
-### Manuel Kurulum (Geliştirici Ortamı)
+### Manual Setup (Development Environment)
 
-**1. Veritabanı ve API (Backend)**
+**1. Database & API (Backend)**
 ```bash
 cd MarketApp.API
-# Veritabanını oluşturur ve örnek verileri (seed) yükler
+# This will automatically apply migrations and seed test data
 dotnet run
 ```
-*(Uygulama başlatıldığında `DbSeeder.cs` otomatik olarak test şubelerini ve admin hesaplarını oluşturacaktır.)*
+*(On first run, `DbSeeder.cs` will automatically create the test branches and admin accounts.)*
 
-**2. React Arayüzü (Frontend)**
+**2. React UI (Frontend)**
 ```bash
 cd market-ui
 npm install
 npm run dev
 ```
 
-## 🔑 Test Hesapları
+## 🔑 Test Accounts
 
-Sistem ayağa kalktığında otomatik olarak aşağıdaki test hesapları oluşturulur (Tüm şifreler: `123` veya belirtilen gibidir):
+When the system boots up, the following test accounts are automatically seeded (Password for all accounts is `123` unless specified):
 
-| Kullanıcı Adı | Şifre | Rol | Yetki Alanı |
+| Email | Password | Role | Scope |
 |---|---|---|---|
-| `super@market.com` | `super123` | Super Admin | Tüm sistem |
-| `hasan@market.com` | `123` | Admin | Sadece "Merkez Şube" |
-| `besiktas@market.com` | `123` | Admin | Sadece "Beşiktaş Şube" |
+| `super@market.com` | `super123` | Super Admin | Entire System |
+| `hasan@market.com` | `123` | Admin | "Merkez Şube" (Central) Only |
+| `besiktas@market.com` | `123` | Admin | "Beşiktaş Şube" Only |
 
-## 📐 Mimari Tasarım
-Proje, katmanlı bir `Controller-Service-Repository` yaklaşımına yakın, ancak mikro geliştirmeler için optimize edilmiş bir yapıdadır. `BaseApiController` üzerinden yetki kontrolleri sağlanır ve JWT içerisindeki `storeId` (Claim) okunarak tüm sorgular şube bazlı filtrelenir.
+## 📐 Architecture Design
+The project follows a `Controller-Service-Repository` pattern optimized for micro-deployments. Authorization checks are centrally handled via `BaseApiController`, and all queries are strictly filtered using the `storeId` Claim embedded inside the JWT.
 
-## 👨‍💻 Geliştirici
+## 👨‍💻 Developer
 **Hasan Basri Dede**  
 Full-Stack Software Developer
