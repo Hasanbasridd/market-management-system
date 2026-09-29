@@ -1,0 +1,12 @@
+namespace MarketApp.API.DTOs;
+
+public class RegisterDto
+{
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
+    public string Role { get; set; } = "staff";
+
+    // Hangi mağazaya kayıt olunuyor? (superadmin için null)
+    public int? StoreId { get; set; }
+}

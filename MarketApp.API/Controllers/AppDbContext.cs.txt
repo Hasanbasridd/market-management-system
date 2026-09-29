@@ -1,0 +1,41 @@
+using Microsoft.EntityFrameworkCore;
+using MarketApp.API.Models;
+
+namespace MarketApp.API.Data;
+
+public class AppDbContext : DbContext
+{
+    // Constructor: bağlantı ayarlarını dışarıdan alıyoruz
+    // "options" içinde "SQLite kullan, şu dosyayı kullan" bilgisi var
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    // Her DbSet bir tablo
+    public DbSet<User> Users { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // PRODUCT tablosunun ince ayarları
+        modelBuilder.Entity<Product>(entity =>
+        {
+            // decimal için kesinlikle tip belirt
+            // yoksa SQLite'ta hata verir
+            entity.Property(p => p.Price)
+                  .HasColumnType("decimal(10,2)");
+
+            // Ürünü olan kategori silinemez
+            entity.HasOne(p => p.Category)
+                  .WithMany(c => c.Products)
+                  .HasForeignKey(p => p.CategoryId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // USER tablosu: email benzersiz olmalı
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasIndex(u => u.Email).IsUnique();
+        });
+    }
+}
